@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Panini WC 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d0f14;--surface:#161920;--card:#1e2230;--border:#2a2f40;--accent:#e8c84a;--accent2:#4af0a8;--red:#ff4757;--blue:#4a90e8;--text:#f0f2f8;--muted:#7a8099;--radius:12px;--nav-h:60px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;overflow:hidden}
+#nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;z-index:100;padding:0 10px;gap:3px}
+.nav-logo{font-family:"Bebas Neue",sans-serif;font-size:20px;color:var(--accent);margin-right:6px;white-space:nowrap}
+.nav-tabs{display:flex;gap:2px;flex:1}
+.nav-tab{flex:1;padding:7px 3px;border:none;background:transparent;color:var(--muted);font-size:10px;font-weight:600;cursor:pointer;border-radius:8px;transition:all .2s;text-transform:uppercase;letter-spacing:.04em;display:flex;flex-direction:column;align-items:center;gap:2px}
+.nav-tab svg{width:17px;height:17px}
+.nav-tab.active{color:var(--accent);background:rgba(232,200,74,.1)}
+#sync-btn{padding:5px 10px;border:1px solid var(--accent);background:transparent;color:var(--accent);font-size:10px;font-weight:700;border-radius:8px;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0}
+#sync-btn:hover{background:var(--accent);color:#000}
+#sync-btn.saving{opacity:.6;pointer-events:none}
+#pages{position:fixed;top:var(--nav-h);left:0;right:0;bottom:0;overflow:hidden}
+.page{position:absolute;inset:0;overflow-y:auto;padding:14px;display:none}
+.page.active{display:block}
+.updated-bar{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:7px 12px;margin-bottom:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.updated-bar .label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.updated-bar .val{font-size:12px;font-weight:700;color:var(--accent);flex:1}
+.sync-status{font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;border:1px solid}
+.sync-status.local{color:var(--accent);border-color:var(--accent)}
+.sync-status.drive{color:var(--accent2);border-color:var(--accent2)}
+.sync-status.unsaved{color:var(--red);border-color:var(--red)}
+.sync-status.syncing{color:var(--blue);border-color:var(--blue)}
+.dash-hero{background:linear-gradient(135deg,#1a1f35 0%,#0d1520 100%);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:12px;position:relative;overflow:hidden}
+.dash-hero::before{content:"⚽";position:absolute;right:-10px;top:-10px;font-size:90px;opacity:.06}
+.dash-hero h1{font-family:"Bebas Neue",sans-serif;font-size:26px;color:var(--accent);line-height:1}
+.dash-hero p{font-size:11px;color:var(--muted);margin-top:3px}
+.progress-ring-wrap{display:flex;align-items:center;gap:16px;margin-top:14px}
+.ring-container{position:relative;width:76px;height:76px;flex-shrink:0}
+.ring-container svg{transform:rotate(-90deg)}
+.ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-pct{font-family:"Bebas Neue",sans-serif;font-size:20px;color:var(--accent);line-height:1}
+.ring-lbl{font-size:8px;color:var(--muted);text-transform:uppercase}
+.progress-stats{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.pstat{background:rgba(255,255,255,.04);border-radius:8px;padding:7px 9px}
+.pstat-n{font-family:"Bebas Neue",sans-serif;font-size:24px;line-height:1}
+.pstat-l{font-size:9px;color:var(--muted)}
+.n-green{color:var(--accent2)}.n-yellow{color:var(--accent)}.n-red{color:var(--red)}.n-blue{color:var(--blue)}
+.mission-card{border-radius:var(--radius);padding:12px 14px;margin-bottom:12px;border:1px solid}
+.mission-card.alert{background:rgba(255,71,87,.08);border-color:var(--red)}
+.mission-card.done{background:rgba(74,240,168,.08);border-color:var(--accent2)}
+.mission-title{font-size:13px;font-weight:700;margin-bottom:3px}
+.mission-desc{font-size:11px;color:var(--muted)}
+.tips-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:12px}
+.tips-title{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.tip-item{display:flex;gap:8px;align-items:flex-start;margin-bottom:7px}
+.tip-icon{font-size:14px;flex-shrink:0}
+.tip-text{font-size:11px;color:var(--muted);line-height:1.5}
+.tip-text strong{color:var(--text)}
+.teams-list{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:12px}
+.tl-header{padding:9px 12px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.sort-btns{display:flex;gap:3px}
+.sort-btn{font-size:10px;padding:2px 7px;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:4px;cursor:pointer}
+.sort-btn.active{border-color:var(--accent);color:var(--accent)}
+.team-row{display:flex;align-items:center;gap:9px;padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+.team-flag{font-size:17px;width:22px;text-align:center}
+.team-name{font-size:11px;font-weight:500;flex:1}
+.team-bar-wrap{width:75px}
+.team-bar{height:4px;background:var(--border);border-radius:99px;overflow:hidden}
+.team-bar-fill{height:100%;border-radius:99px;background:var(--accent2)}
+.team-pct{font-size:10px;color:var(--muted);width:32px;text-align:right}
+.ing-controls{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+.ing-search{flex:1;min-width:130px;padding:8px 11px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;outline:none}
+.ing-search:focus{border-color:var(--accent)}
+.ctrl-select{padding:8px 9px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px}
+.team-filter-scroll{display:flex;gap:5px;overflow-x:auto;padding-bottom:5px;margin-bottom:12px;scrollbar-width:none}
+.team-filter-scroll::-webkit-scrollbar{display:none}
+.tf-btn{padding:5px 11px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:11px;border-radius:20px;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0}
+.tf-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(232,200,74,.1)}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;padding:8px 12px;background:var(--card);border:1px solid var(--border);border-radius:8px}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)}
+.legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;border:2px solid}
+.ld-green{border-color:var(--accent2);background:rgba(74,240,168,.15)}
+.ld-yellow{border-color:var(--accent);background:rgba(232,200,74,.15)}
+.ld-blue{border-color:var(--blue);background:rgba(74,144,232,.15)}
+.ld-red{border-color:var(--red);background:rgba(255,71,87,.15)}
+.sticker-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:7px}
+.sticker-cell{background:var(--card);border:2px solid var(--border);border-radius:10px;aspect-ratio:3/4;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:6px 4px;cursor:pointer;user-select:none;transition:all .12s;position:relative;-webkit-user-select:none}
+.sticker-cell:active{transform:scale(.93)}
+.sticker-cell.owned{border-color:var(--accent2);background:rgba(74,240,168,.06)}
+.sticker-cell.repeated{border-color:var(--accent);background:rgba(232,200,74,.08)}
+.sticker-cell.star-player{border-color:var(--blue)}
+.sticker-cell.star-player.owned{border-color:var(--blue);background:rgba(74,144,232,.08)}
+.sticker-cell.ronaldo-cell{border-color:var(--red)}
+.sticker-cell.ronaldo-cell.owned{border-color:var(--red);background:rgba(255,71,87,.1)}
+.sc-id{font-size:9px;color:var(--muted);font-weight:600;align-self:flex-start}
+.sc-flag{font-size:19px}
+.sc-qty{font-family:"Bebas Neue",sans-serif;font-size:30px;line-height:1;color:var(--muted)}
+.sticker-cell.owned .sc-qty{color:var(--accent2)}
+.sticker-cell.repeated .sc-qty{color:var(--accent)}
+.sticker-cell.ronaldo-cell.owned .sc-qty{color:var(--red)}
+.star-badge{position:absolute;top:3px;right:3px;width:13px;height:13px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7px}
+.ronaldo-top{position:absolute;top:0;left:0;right:0;background:var(--red);border-radius:8px 8px 0 0;font-size:6px;font-weight:700;color:#fff;text-align:center;padding:2px;letter-spacing:.04em}
+.grid-section-header{grid-column:1/-1;padding:10px 3px 3px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;border-top:1px solid var(--border);margin-top:3px;display:flex;align-items:center;gap:7px}
+.grid-section-header:first-child{border-top:none;margin-top:0}
+.cambios-section{margin-bottom:18px}
+.cs-title{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;padding:7px 0;border-bottom:1px solid var(--border);margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.cs-badge{background:var(--accent);color:#000;font-size:9px;font-weight:700;border-radius:20px;padding:2px 7px}
+.cs-badge.red{background:var(--red);color:#fff}
+.cs-badge.blue{background:var(--blue);color:#fff}
+.priority-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(126px,1fr));gap:7px;margin-bottom:10px}
+.priority-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:9px 11px;display:flex;flex-direction:column;gap:3px}
+.priority-card.missing{border-color:var(--red);background:rgba(255,71,87,.06)}
+.priority-card.have{border-color:var(--accent2);background:rgba(74,240,168,.04)}
+.priority-card.repeated-star{border-color:var(--accent);background:rgba(232,200,74,.06)}
+.pc-id{font-size:9px;color:var(--muted)}
+.pc-flag{font-size:17px}
+.pc-name{font-size:11px;font-weight:600;line-height:1.3}
+.pc-status{font-size:9px;font-weight:700}
+.pc-status.miss{color:var(--red)}.pc-status.ok{color:var(--accent2)}.pc-status.rep{color:var(--accent)}
+.compact-list{display:flex;flex-wrap:wrap;gap:5px}
+.compact-chip{display:inline-flex;align-items:center;gap:4px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:4px 9px;font-size:11px}
+.compact-chip.rep{border-color:var(--accent)}
+.compact-chip.miss{border-color:rgba(255,71,87,.4)}
+.chip-id{font-weight:700;font-size:10px}
+.chip-qty{background:var(--accent);color:#000;font-size:9px;font-weight:700;border-radius:99px;padding:1px 5px}
+.sort-row{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap}
+.sort-chip{padding:4px 11px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:10px;border-radius:20px;cursor:pointer}
+.sort-chip.active{border-color:var(--accent);color:var(--accent)}
+.empty{text-align:center;padding:32px 16px;color:var(--muted);font-size:12px}
+.export-bar{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}
+.export-bar button{padding:7px 13px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--text);transition:all .2s}
+.export-bar button:hover{border-color:var(--accent);color:var(--accent)}
+.export-bar input[type=file]{display:none}
+#drive-banner{background:rgba(74,144,232,.1);border:1px solid var(--blue);border-radius:10px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;font-size:12px;flex-wrap:wrap}
+#drive-banner span{flex:1;color:var(--text)}
+#drive-banner button{padding:6px 14px;background:var(--blue);color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer}
+@media(max-width:390px){.sticker-grid{grid-template-columns:repeat(auto-fill,minmax(68px,1fr));gap:6px}.nav-logo{font-size:17px}.priority-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}}
+@media(min-width:600px){.sticker-grid{grid-template-columns:repeat(auto-fill,minmax(88px,1fr))}.page{padding:18px;max-width:900px;margin:0 auto}}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(70px);background:var(--card);border:1px solid var(--border);color:var(--text);padding:9px 18px;border-radius:99px;font-size:12px;font-weight:600;transition:transform .3s;z-index:999;white-space:nowrap}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.success{border-color:var(--accent2);color:var(--accent2)}
+#toast.error{border-color:var(--red);color:var(--red)}
+#toast.info{border-color:var(--blue);color:var(--blue)}
+#loading{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.loading-logo{font-family:"Bebas Neue",sans-serif;font-size:40px;color:var(--accent)}
+.loading-sub{font-size:12px;color:var(--muted);text-align:center;max-width:260px}
+.spinner{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div id="loading">
+  <div class="loading-logo">⚽ PANINI 2026</div>
+  <div class="spinner"></div>
+  <div class="loading-sub" id="load-msg">Iniciando...</div>
+</div>
+<nav id="nav">
+  <div class="nav-logo">⚽ 2026</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="goPage('dash')" id="tab-dash">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Resumen
+    </button>
+    <button class="nav-tab" onclick="goPage('ing')" id="tab-ing">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+      Ingresar
+    </button>
+    <button class="nav-tab" onclick="goPage('cam')" id="tab-cam">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 16l-4-4 4-4M17 8l4 4-4 4M14 4l-4 16"/></svg>
+      Cambios
+    </button>
+  </div>
+  <button id="sync-btn" onclick="saveAll()">💾 Guardar</button>
+</nav>
+<div id="pages">
+  <div class="page active" id="page-dash">
+    <div id="drive-banner" style="display:none">
+      <span>🔗 Conecta Google Drive para sincronizar entre iPhone y laptop automáticamente</span>
+      <button onclick="signIn()">Conectar Drive</button>
+    </div>
+    <div class="updated-bar">
+      <span class="label">Actualizado</span>
+      <span class="val" id="dash-updated">—</span>
+      <span class="sync-status local" id="sync-badge">💾 Local</span>
+    </div>
+    <div class="dash-hero">
+      <h1>FIFA WORLD CUP 2026</h1>
+      <p>Panini Official Sticker Album · 980 figuritas · 48 selecciones</p>
+      <div class="progress-ring-wrap">
+        <div class="ring-container">
+          <svg width="76" height="76" viewBox="0 0 76 76">
+            <circle cx="38" cy="38" r="32" fill="none" stroke="#2a2f40" stroke-width="6"/>
+            <circle id="ring-circle" cx="38" cy="38" r="32" fill="none" stroke="#e8c84a" stroke-width="6" stroke-dasharray="201.1" stroke-dashoffset="201.1" stroke-linecap="round"/>
+          </svg>
+          <div class="ring-center"><div class="ring-pct" id="ring-pct">0%</div><div class="ring-lbl">listo</div></div>
+        </div>
+        <div class="progress-stats">
+          <div class="pstat"><div class="pstat-n n-green" id="s-owned">0</div><div class="pstat-l">Tengo</div></div>
+          <div class="pstat"><div class="pstat-n n-yellow" id="s-reps">0</div><div class="pstat-l">Repetidas</div></div>
+          <div class="pstat"><div class="pstat-n n-red" id="s-miss">980</div><div class="pstat-l">Faltan</div></div>
+          <div class="pstat"><div class="pstat-n n-blue" id="s-extr">0</div><div class="pstat-l">Para cambio</div></div>
+        </div>
+      </div>
+    </div>
+    <div id="ronaldo-mission"></div>
+    <div class="tips-card">
+      <div class="tips-title">💡 Tips de la semana</div>
+      <div class="tip-item"><span class="tip-icon">🔁</span><div class="tip-text"><strong>Intercambia primero.</strong> Con 208 sobres (~1,456 figuritas) ya tienes un gran arsenal antes de comprar más.</div></div>
+      <div class="tip-item"><span class="tip-icon">🎯</span><div class="tip-text"><strong>Ronaldo = moneda VIP.</strong> Si alguien tiene POR7 repetido, ofrece 3-4 figuritas. Vale la pena.</div></div>
+      <div class="tip-item"><span class="tip-icon">📱</span><div class="tip-text"><strong>Grupos en Lima.</strong> Busca "Panini Mundial 2026 Lima" en Facebook — mercados de cambio muy activos.</div></div>
+      <div class="tip-item"><span class="tip-icon">⚠️</span><div class="tip-text"><strong>Coca-Cola exclusivas (CC1-CC14).</strong> No vienen en sobres normales. Solo botellas promocionales o compra directa.</div></div>
+    </div>
+    <div class="teams-list">
+      <div class="tl-header">
+        <span>Progreso por selección</span>
+        <div class="sort-btns">
+          <button class="sort-btn active" onclick="sortTeams('alpha')" id="sort-alpha">A-Z</button>
+          <button class="sort-btn" onclick="sortTeams('reps')" id="sort-reps">Repet.</button>
+          <button class="sort-btn" onclick="sortTeams('miss')" id="sort-miss">Faltan</button>
+        </div>
+      </div>
+      <div id="teams-list-body"></div>
+    </div>
+    <div class="export-bar">
+      <button onclick="exportJSON()">⬇ Exportar backup</button>
+      <button onclick="document.getElementById('imp').click()">⬆ Importar backup</button>
+      <input type="file" id="imp" accept=".json" onchange="importJSON(event)">
+    </div>
+  </div>
+  <div class="page" id="page-ing">
+    <div class="updated-bar">
+      <span class="label">Actualizado</span>
+      <span class="val" id="ing-updated">—</span>
+      <span class="sync-status local" id="sync-badge-ing">💾 Local</span>
+    </div>
+    <div class="ing-controls">
+      <input class="ing-search" id="ing-search" placeholder="Buscar por código o país..." oninput="renderGrid()">
+      <select class="ctrl-select" id="ing-sort" onchange="renderGrid()">
+        <option value="default">Orden álbum</option>
+        <option value="alpha">Alfabético A-Z</option>
+        <option value="owned">Con figuritas primero</option>
+        <option value="empty">Sin figuritas primero</option>
+      </select>
+    </div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot ld-green"></div> Tengo (1 copia)</div>
+      <div class="legend-item"><div class="legend-dot ld-yellow"></div> Repetida (2+)</div>
+      <div class="legend-item"><div class="legend-dot ld-blue"></div> ⭐ Estrella mundial</div>
+      <div class="legend-item"><div class="legend-dot ld-red"></div> 🎯 CR7 Misión</div>
+    </div>
+    <div class="team-filter-scroll" id="team-filters"></div>
+    <div class="sticker-grid" id="sticker-grid"></div>
+  </div>
+  <div class="page" id="page-cam">
+    <div class="updated-bar">
+      <span class="label">Actualizado</span>
+      <span class="val" id="cam-updated">—</span>
+      <span class="sync-status local" id="sync-badge-cam">💾 Local</span>
+    </div>
+    <div class="cambios-section">
+      <div class="cs-title">⭐ Jugadores Estrella — Prioridades<span class="cs-badge blue">TOP 18</span></div>
+      <div class="priority-grid" id="priority-grid"></div>
+    </div>
+    <div class="cambios-section">
+      <div class="cs-title">🔁 Mis Repetidas — Para ofrecer<span class="cs-badge" id="rep-badge">0</span></div>
+      <div class="sort-row">
+        <button class="sort-chip active" onclick="sortCambios('team')" id="csort-team">Por selección</button>
+        <button class="sort-chip" onclick="sortCambios('qty')" id="csort-qty">Por cantidad</button>
+      </div>
+      <div class="compact-list" id="reps-list"></div>
+      <div class="empty" id="reps-empty" style="display:none">Sin repetidas aún.</div>
+    </div>
+    <div class="cambios-section">
+      <div class="cs-title">🎯 Me Faltan — Para pedir<span class="cs-badge red" id="miss-badge">0</span></div>
+      <div class="sort-row">
+        <button class="sort-chip active" onclick="sortFaltantes('team')" id="fsort-team">Por selección</button>
+        <button class="sort-chip" onclick="sortFaltantes('alpha')" id="fsort-alpha">Alfabético</button>
+      </div>
+      <div class="compact-list" id="miss-list"></div>
+    </div>
+  </div>
+</div>
+<div id="toast"></div>
+<script>
+// ══ CREDENCIALES GOOGLE ══════════════════════
+const CLIENT_ID = "495283793966-d3kee3kisvtv1763qeemkjp3hvua6t79.apps.googleusercontent.com";
+const API_KEY   = "AIzaSyC0HPJYKw5E9o2ZJDZ9IOme6dsv6kb5FEw";
+const SCOPES    = "https://www.googleapis.com/auth/drive.file";
+const FILE_ID_KEY   = "panini_file_id_v3";
+const LOCAL_KEY     = "panini2026_v4";
+const DRIVE_FILENAME = "panini_data_2026.json";
+const TOTAL = 980, MAX_QTY = 8;
+
+const STAR_PLAYERS={"POR7":{name:"Cristiano Ronaldo",flag:"🇵🇹"},"ARG10":{name:"Lionel Messi",flag:"🇦🇷"},"FRA12":{name:"Kylian Mbappé",flag:"🇫🇷"},"NOR9":{name:"Erling Haaland",flag:"🇳🇴"},"ENG9":{name:"Harry Kane",flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},"BRA10":{name:"Vinicius Jr.",flag:"🇧🇷"},"ESP7":{name:"Lamine Yamal",flag:"🇪🇸"},"GER9":{name:"Jamal Musiala",flag:"🇩🇪"},"ESP11":{name:"Pedri",flag:"🇪🇸"},"BRA7":{name:"Rodrygo",flag:"🇧🇷"},"NED9":{name:"Cody Gakpo",flag:"🇳🇱"},"FRA11":{name:"A. Griezmann",flag:"🇫🇷"},"URU9":{name:"Darwin Núñez",flag:"🇺🇾"},"COL9":{name:"Luis Díaz",flag:"🇨🇴"},"ARG7":{name:"Julián Álvarez",flag:"🇦🇷"},"MAR10":{name:"A. Hakimi",flag:"🇲🇦"},"SEN9":{name:"Sadio Mané",flag:"🇸🇳"},"JPN10":{name:"T. Minamino",flag:"🇯🇵"}};
+const TEAMS=[{code:"FWC",name:"World Cup History",flag:"🏆"},{code:"MEX",name:"Mexico",flag:"🇲🇽"},{code:"RSA",name:"South Africa",flag:"🇿🇦"},{code:"KOR",name:"South Korea",flag:"🇰🇷"},{code:"CZE",name:"Czechia",flag:"🇨🇿"},{code:"CAN",name:"Canada",flag:"🇨🇦"},{code:"BIH",name:"Bosnia & Herz.",flag:"🇧🇦"},{code:"QAT",name:"Qatar",flag:"🇶🇦"},{code:"SUI",name:"Switzerland",flag:"🇨🇭"},{code:"BRA",name:"Brazil",flag:"🇧🇷"},{code:"MAR",name:"Morocco",flag:"🇲🇦"},{code:"HAI",name:"Haiti",flag:"🇭🇹"},{code:"SCO",name:"Scotland",flag:"🏴󠁧󠁢󠁳󠁣󠁴󠁿"},{code:"USA",name:"United States",flag:"🇺🇸"},{code:"PAR",name:"Paraguay",flag:"🇵🇾"},{code:"AUS",name:"Australia",flag:"🇦🇺"},{code:"TUR",name:"Turkey",flag:"🇹🇷"},{code:"GER",name:"Germany",flag:"🇩🇪"},{code:"CUW",name:"Curaçao",flag:"🇨🇼"},{code:"CIV",name:"Côte d'Ivoire",flag:"🇨🇮"},{code:"ECU",name:"Ecuador",flag:"🇪🇨"},{code:"NED",name:"Netherlands",flag:"🇳🇱"},{code:"JPN",name:"Japan",flag:"🇯🇵"},{code:"SWE",name:"Sweden",flag:"🇸🇪"},{code:"TUN",name:"Tunisia",flag:"🇹🇳"},{code:"BEL",name:"Belgium",flag:"🇧🇪"},{code:"EGY",name:"Egypt",flag:"🇪🇬"},{code:"IRN",name:"Iran",flag:"🇮🇷"},{code:"NZL",name:"New Zealand",flag:"🇳🇿"},{code:"ESP",name:"Spain",flag:"🇪🇸"},{code:"CPV",name:"Cape Verde",flag:"🇨🇻"},{code:"KSA",name:"Saudi Arabia",flag:"🇸🇦"},{code:"URU",name:"Uruguay",flag:"🇺🇾"},{code:"FRA",name:"France",flag:"🇫🇷"},{code:"SEN",name:"Senegal",flag:"🇸🇳"},{code:"IRQ",name:"Iraq",flag:"🇮🇶"},{code:"NOR",name:"Norway",flag:"🇳🇴"},{code:"ARG",name:"Argentina",flag:"🇦🇷"},{code:"ALG",name:"Algeria",flag:"🇩🇿"},{code:"AUT",name:"Austria",flag:"🇦🇹"},{code:"JOR",name:"Jordan",flag:"🇯🇴"},{code:"POR",name:"Portugal",flag:"🇵🇹"},{code:"COD",name:"DR Congo",flag:"🇨🇩"},{code:"UZB",name:"Uzbekistan",flag:"🇺🇿"},{code:"COL",name:"Colombia",flag:"🇨🇴"},{code:"ENG",name:"England",flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},{code:"CRO",name:"Croatia",flag:"🇭🇷"},{code:"GHA",name:"Ghana",flag:"🇬🇭"},{code:"PAN",name:"Panama",flag:"🇵🇦"},{code:"CC",name:"Coca-Cola Special",flag:"🥤"}];
+let STICKERS=[];
+TEAMS.forEach(t=>{const n=t.code==="CC"?14:20;for(let i=1;i<=n;i++)STICKERS.push({id:t.code+i,code:t.code,team:t.name,flag:t.flag,num:i})});
+
+let stickers={},lastUpdated="—",hasUnsaved=false;
+let driveReady=false,driveFileId=localStorage.getItem(FILE_ID_KEY)||null,driveSignedIn=false,tokenClient;
+let activeTeamFilter="ALL",cambiosSort="team",faltantesSort="team",teamsSort="alpha";
+
+function loadScript(src){return new Promise(r=>{if(document.querySelector(`script[src="${src}"]`)){r();return;}const s=document.createElement("script");s.src=src;s.onload=r;document.head.appendChild(s)});}
+
+async function initDrive(){
+  try{
+    setLoadMsg("Cargando Google Drive API...");
+    await Promise.all([loadScript("https://apis.google.com/js/api.js"),loadScript("https://accounts.google.com/gsi/client")]);
+    await new Promise(r=>gapi.load("client",r));
+    await gapi.client.init({apiKey:API_KEY,discoveryDocs:["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"]});
+    tokenClient=google.accounts.oauth2.initTokenClient({
+      client_id:CLIENT_ID,scope:SCOPES,
+      callback:(resp)=>{
+        if(resp.error){showBanner();document.getElementById("loading").style.display="none";renderAll();return;}
+        driveSignedIn=true;
+        localStorage.setItem("panini_drive_auth","1");
+        document.getElementById("drive-banner").style.display="none";
+        loadFromDrive();
+      }
+    });
+    driveReady=true;
+    if(localStorage.getItem("panini_drive_auth")==="1"){
+      tokenClient.requestAccessToken({prompt:""});
+    } else {
+      showBanner();
+      document.getElementById("loading").style.display="none";
+      renderAll();
+    }
+  }catch(e){
+    console.warn("Drive init failed",e);
+    showBanner();
+    document.getElementById("loading").style.display="none";
+    renderAll();
+  }
+}
+function showBanner(){document.getElementById("drive-banner").style.display="flex";}
+function signIn(){if(driveReady)tokenClient.requestAccessToken({prompt:"consent"});else showToast("Drive no disponible","error");}
+
+async function loadFromDrive(){
+  try{
+    setSyncBadge("syncing","⏳ Sincronizando...");
+    setLoadMsg("Buscando datos en Drive...");
+    let fid=driveFileId;
+    if(!fid){
+      const r=await gapi.client.drive.files.list({q:`name='${DRIVE_FILENAME}' and trashed=false`,fields:"files(id)",pageSize:1});
+      const files=(r.result.files||[]);
+      if(files.length){fid=files[0].id;driveFileId=fid;localStorage.setItem(FILE_ID_KEY,fid);}
+    }
+    if(fid){
+      const r=await gapi.client.drive.files.get({fileId:fid,alt:"media"});
+      const data=typeof r.result==="string"?JSON.parse(r.result):r.result;
+      if(data&&data.s){stickers=data.s;lastUpdated=data.d||"—";}
+      saveLocal();
+      setSyncBadge("drive","✓ Drive");
+      showToast("✅ Datos cargados desde Drive","success");
+    }else{setSyncBadge("local","💾 Local");}
+  }catch(e){console.warn("Drive load error",e);setSyncBadge("local","💾 Local");}
+  document.getElementById("loading").style.display="none";
+  renderAll();
+}
+
+async function saveToDrive(){
+  if(!driveSignedIn||!driveReady)return false;
+  try{
+    const content=JSON.stringify({s:stickers,d:lastUpdated,v:"3.0"});
+    const blob=new Blob([content],{type:"application/json"});
+    const meta=JSON.stringify({name:DRIVE_FILENAME,mimeType:"application/json"});
+    const form=new FormData();
+    form.append("metadata",new Blob([meta],{type:"application/json"}));
+    form.append("file",blob);
+    const token=gapi.auth.getToken();
+    const url=driveFileId?`https://www.googleapis.com/upload/drive/v3/files/${driveFileId}?uploadType=multipart`:"https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart";
+    const r=await fetch(url,{method:driveFileId?"PATCH":"POST",headers:{"Authorization":"Bearer "+token.access_token},body:form});
+    if(r.ok){const j=await r.json();driveFileId=j.id;localStorage.setItem(FILE_ID_KEY,j.id);return true;}
+  }catch(e){console.warn("Drive save error",e);}
+  return false;
+}
+
+function loadLocal(){const s=localStorage.getItem(LOCAL_KEY);if(s)try{const p=JSON.parse(s);stickers=p.s||{};lastUpdated=p.d||"—";}catch(e){}}
+function saveLocal(){localStorage.setItem(LOCAL_KEY,JSON.stringify({s:stickers,d:lastUpdated}));}
+
+async function saveAll(){
+  const btn=document.getElementById("sync-btn");
+  btn.textContent="⏳";btn.classList.add("saving");
+  const now=new Date();
+  lastUpdated=now.toLocaleDateString("es-PE",{day:"2-digit",month:"2-digit",year:"numeric"})+" "+now.toLocaleTimeString("es-PE",{hour:"2-digit",minute:"2-digit"});
+  saveLocal();
+  setSyncBadge("syncing","⏳ Guardando...");
+  const ok=await saveToDrive();
+  hasUnsaved=false;
+  if(ok){setSyncBadge("drive","✓ Drive");showToast("✅ Guardado en Drive y local","success");}
+  else{setSyncBadge("local","💾 Local");showToast("💾 Guardado localmente","success");}
+  updateUI();
+  btn.textContent="💾 Guardar";btn.classList.remove("saving");
+}
+
+function setSyncBadge(cls,txt){["sync-badge","sync-badge-ing","sync-badge-cam"].forEach(id=>{const e=document.getElementById(id);if(e){e.className="sync-status "+cls;e.textContent=txt;}});}
+function setLoadMsg(m){const e=document.getElementById("load-msg");if(e)e.textContent=m;}
+function updateUI(){["dash","ing","cam"].forEach(p=>{const e=document.getElementById(p+"-updated");if(e)e.textContent=lastUpdated;});if(hasUnsaved)setSyncBadge("unsaved","● Sin guardar");}
+function goPage(id){document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));document.querySelectorAll(".nav-tab").forEach(t=>t.classList.remove("active"));document.getElementById("page-"+id).classList.add("active");document.getElementById("tab-"+id).classList.add("active");if(id==="ing")renderGrid();if(id==="cam")renderCambios();if(id==="dash")renderDash();}
+function renderAll(){renderDash();renderTeamFilters();}
+
+function tapSticker(id){
+  const cur=stickers[id]||0,next=(cur+1)%MAX_QTY;
+  if(next===0)delete stickers[id];else stickers[id]=next;
+  hasUnsaved=true;
+  const cell=document.getElementById("cell-"+id);
+  if(cell)refreshCell(cell,id);
+  updateDashStats();
+  setSyncBadge("unsaved","● Sin guardar");
+}
+function refreshCell(cell,id){const qty=stickers[id]||0,isRon=id==="POR7",isStar=!!STAR_PLAYERS[id];cell.className="sticker-cell"+(isRon?" ronaldo-cell"+(qty?" owned":""):(qty===1?" owned":qty>1?" repeated":""))+(isStar&&!isRon?" star-player":"");cell.querySelector(".sc-qty").textContent=qty;}
+
+function renderDash(){updateUI();updateDashStats();renderTeamsList();renderRonaldoMission();}
+function updateDashStats(){const vals=Object.values(stickers);const owned=vals.filter(v=>v>=1).length,reps=vals.filter(v=>v>=2).length,extra=vals.reduce((a,v)=>a+Math.max(0,v-1),0),pct=Math.round(owned/TOTAL*100);document.getElementById("s-owned").textContent=owned;document.getElementById("s-reps").textContent=reps;document.getElementById("s-miss").textContent=TOTAL-owned;document.getElementById("s-extr").textContent=extra;document.getElementById("ring-pct").textContent=pct+"%";document.getElementById("ring-circle").style.strokeDashoffset=201.1-(201.1*pct/100);}
+function renderRonaldoMission(){const el=document.getElementById("ronaldo-mission"),qty=stickers["POR7"]||0;if(qty===0)el.innerHTML='<div class="mission-card alert"><div class="mission-title" style="color:var(--red)">🎯 MISIÓN ACTIVA: Conseguir a Ronaldo (POR7)</div><div class="mission-desc">CR7 no está en tu álbum. Ofrece 3-4 figuritas por él. ¡Prioridad máxima!</div></div>';else if(qty===1)el.innerHTML='<div class="mission-card done"><div class="mission-title" style="color:var(--accent2)">✅ ¡Conseguiste a Ronaldo! (POR7)</div><div class="mission-desc">CR7 ya está en tu álbum. Un repetido sería excelente moneda de cambio.</div></div>';else el.innerHTML=`<div class="mission-card done"><div class="mission-title" style="color:var(--accent)">⭐ Ronaldo x${qty} — ¡${qty-1} para cambio!</div><div class="mission-desc">Úsalos para conseguir tus figuritas más difíciles.</div></div>`;}
+function renderTeamsList(){let data=TEAMS.filter(t=>t.code!=="CC").map(t=>{const ts=STICKERS.filter(s=>s.code===t.code);const owned=ts.filter(s=>(stickers[s.id]||0)>=1).length,reps=ts.reduce((a,s)=>a+Math.max(0,(stickers[s.id]||0)-1),0);return{...t,owned,reps,missing:20-owned,pct:Math.round(owned/20*100)};});if(teamsSort==="alpha")data.sort((a,b)=>a.name.localeCompare(b.name));else if(teamsSort==="reps")data.sort((a,b)=>b.reps-a.reps);else data.sort((a,b)=>b.missing-a.missing);document.getElementById("teams-list-body").innerHTML=data.map(t=>`<div class="team-row"><span class="team-flag">${t.flag}</span><span class="team-name">${t.name}</span><div class="team-bar-wrap"><div class="team-bar"><div class="team-bar-fill" style="width:${t.pct}%"></div></div></div><span class="team-pct">${t.pct}%</span></div>`).join("");}
+function sortTeams(by){teamsSort=by;["alpha","reps","miss"].forEach(s=>document.getElementById("sort-"+s).classList.toggle("active",s===by));renderTeamsList();}
+
+function renderTeamFilters(){document.getElementById("team-filters").innerHTML=[{code:"ALL",name:"All",flag:"⚽"},...TEAMS].map(t=>`<button class="tf-btn ${activeTeamFilter===t.code?"active":""}" onclick="setTeamFilter('${t.code}')">${t.flag} ${t.code==="ALL"?"All":t.code}</button>`).join("");}
+function setTeamFilter(code){activeTeamFilter=code;renderTeamFilters();renderGrid();}
+function renderGrid(){const q=document.getElementById("ing-search").value.toLowerCase();const sb=document.getElementById("ing-sort").value;let f=STICKERS.filter(s=>{if(activeTeamFilter!=="ALL"&&s.code!==activeTeamFilter)return false;if(q&&!s.id.toLowerCase().includes(q)&&!s.team.toLowerCase().includes(q))return false;return true;});if(sb==="alpha")f=[...f].sort((a,b)=>a.team.localeCompare(b.team)||a.num-b.num);else if(sb==="owned")f=[...f].sort((a,b)=>(stickers[b.id]||0)-(stickers[a.id]||0));else if(sb==="empty")f=[...f].sort((a,b)=>(stickers[a.id]||0)-(stickers[b.id]||0));let html="",lastCode=null;f.forEach(s=>{if(activeTeamFilter==="ALL"&&s.code!==lastCode){const t=TEAMS.find(t=>t.code===s.code);html+=`<div class="grid-section-header">${t?t.flag:""} ${t?t.name:s.code}</div>`;lastCode=s.code;}const qty=stickers[s.id]||0,isRon=s.id==="POR7",isStar=!!STAR_PLAYERS[s.id];const cls="sticker-cell"+(isRon?" ronaldo-cell"+(qty?" owned":""):(qty===1?" owned":qty>1?" repeated":""))+(isStar&&!isRon?" star-player":"");html+=`<div class="${cls}" id="cell-${s.id}" onclick="tapSticker('${s.id}')">${isRon?'<div class="ronaldo-top">CR7</div>':""}${isStar&&!isRon?'<div class="star-badge">⭐</div>':""}<span class="sc-id">${s.id}</span><span class="sc-flag">${s.flag}</span><span class="sc-qty">${qty}</span></div>`;});document.getElementById("sticker-grid").innerHTML=html;document.getElementById("ing-updated").textContent=lastUpdated;}
+
+function renderCambios(){document.getElementById("cam-updated").textContent=lastUpdated;document.getElementById("priority-grid").innerHTML=Object.entries(STAR_PLAYERS).map(([id,info])=>{const qty=stickers[id]||0,cls=qty===0?"missing":qty===1?"have":"repeated-star";const st=qty===0?'<span class="pc-status miss">✗ FALTA</span>':qty===1?'<span class="pc-status ok">✓ Tengo</span>':`<span class="pc-status rep">✓ x${qty} — ${qty-1} cambio</span>`;return`<div class="priority-card ${cls}"><div class="pc-id">${id}</div><div class="pc-flag">${info.flag}</div><div class="pc-name">${info.name}</div>${st}</div>`;}).join("");let reps=STICKERS.filter(s=>(stickers[s.id]||0)>=2).map(s=>({...s,extra:(stickers[s.id]||0)-1}));if(cambiosSort==="team")reps.sort((a,b)=>a.code.localeCompare(b.code)||a.num-b.num);else reps.sort((a,b)=>b.extra-a.extra);document.getElementById("rep-badge").textContent=reps.reduce((a,s)=>a+s.extra,0);const rl=document.getElementById("reps-list"),re=document.getElementById("reps-empty");if(!reps.length){rl.innerHTML="";re.style.display="";}else{re.style.display="none";rl.innerHTML=reps.map(s=>`<div class="compact-chip rep"><span>${s.flag}</span><span class="chip-id">${s.id}</span><span class="chip-qty">x${s.extra}</span></div>`).join("");}let miss=STICKERS.filter(s=>(stickers[s.id]||0)===0);if(faltantesSort==="team")miss.sort((a,b)=>a.code.localeCompare(b.code)||a.num-b.num);else miss.sort((a,b)=>a.id.localeCompare(b.id));document.getElementById("miss-badge").textContent=miss.length;document.getElementById("miss-list").innerHTML=miss.map(s=>`<div class="compact-chip miss"><span>${s.flag}</span><span class="chip-id">${s.id}</span></div>`).join("");}
+function sortCambios(by){cambiosSort=by;["team","qty"].forEach(s=>document.getElementById("csort-"+s).classList.toggle("active",s===by));renderCambios();}
+function sortFaltantes(by){faltantesSort=by;["team","alpha"].forEach(s=>document.getElementById("fsort-"+s).classList.toggle("active",s===by));renderCambios();}
+
+function exportJSON(){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify({stickers,lastUpdated,v:"3.0"},null,2)],{type:"application/json"}));a.download=`panini_backup_${new Date().toISOString().slice(0,10)}.json`;a.click();showToast("⬇ Backup exportado","success");}
+function importJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const p=JSON.parse(ev.target.result);if(p.stickers)stickers=p.stickers;else if(p.s)stickers=p.s;lastUpdated=p.lastUpdated||p.d||lastUpdated;hasUnsaved=true;renderAll();updateUI();showToast("✅ Backup importado","success");}catch(x){showToast("Error al importar","error");}};r.readAsText(f);e.target.value="";}
+
+let toastT;
+function showToast(msg,type=""){const t=document.getElementById("toast");t.textContent=msg;t.className="show "+type;clearTimeout(toastT);toastT=setTimeout(()=>t.className="",3200);}
+
+async function init(){
+  loadLocal();
+  setSyncBadge("local","💾 Local");
+  // Siempre inicia Drive (credenciales ya configuradas)
+  await initDrive();
+}
+init();
+</script>
+</body>
+</html>
