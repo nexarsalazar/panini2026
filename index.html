@@ -520,7 +520,7 @@ function sortTeams(by){teamsSort=by;["alpha","reps","miss"].forEach(s=>document.
 function renderTeamFilters(){
   const allTeams=[{code:"ALL",name:"All",flag:"⚽"},...TEAMS];
   document.getElementById("team-filters").innerHTML=allTeams.map(t=>`<button class="tf-btn ${activeTeamFilter===t.code?"active":""}" data-code="${t.code}" data-name="${t.name.toLowerCase()}" onclick="setTeamFilter('${t.code}')">${t.flag} ${t.code==="ALL"?"All":t.code}</button>`).join("");
-},...TEAMS].map(t=>`<button class="tf-btn ${activeTeamFilter===t.code?"active":""}" onclick="setTeamFilter('${t.code}')">${t.flag} ${t.code==="ALL"?"All":t.code}</button>`).join("");}
+}
 function setTeamFilter(code){
   activeTeamFilter=code;
   document.querySelectorAll(".tf-btn").forEach(b=>{
