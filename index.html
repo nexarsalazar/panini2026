@@ -240,7 +240,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:"Inter"
     <div class="tips-card">
       <div class="tips-title">💡 Tips de la semana</div>
       <div class="tip-item"><span class="tip-icon">🔁</span><div class="tip-text"><strong>Intercambia primero.</strong> Con 208 sobres (~1,456 figuritas) ya tienes un gran arsenal antes de comprar más.</div></div>
-      <div class="tip-item"><span class="tip-icon">🎯</span><div class="tip-text"><strong>Ronaldo = moneda VIP.</strong> Si alguien tiene POR7 repetido, ofrece 3-4 figuritas. Vale la pena.</div></div>
+      <div class="tip-item"><span class="tip-icon">🎯</span><div class="tip-text"><strong>Messi (ARG17) y Ronaldo (POR15)</strong> son las dos figuritas más buscadas. Si alguien las tiene repetidas, ofrece 3-4 por cada una. ¡Valen la pena!</div></div>
       <div class="tip-item"><span class="tip-icon">📱</span><div class="tip-text"><strong>Grupos en Lima.</strong> Busca "Panini Mundial 2026 Lima" en Facebook — mercados de cambio muy activos.</div></div>
       <div class="tip-item"><span class="tip-icon">⚠️</span><div class="tip-text"><strong>Coca-Cola exclusivas (CC1-CC14).</strong> No vienen en sobres normales. Solo botellas promocionales o compra directa.</div></div>
     </div>
@@ -295,7 +295,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:"Inter"
       <span class="sync-status local" id="sync-badge-cam">💾 Local</span>
     </div>
     <div class="cambios-section">
-      <div class="cs-title">⭐ Jugadores Estrella — Prioridades<span class="cs-badge blue">TOP 19</span></div>
+      <div class="cs-title">⭐ Jugadores Estrella — Prioridades<span class="cs-badge blue">TOP 28</span></div>
       <div class="priority-grid" id="priority-grid"></div>
     </div>
     <div class="cambios-section">
@@ -338,25 +338,34 @@ const DRIVE_FILENAME = "panini_data_2026.json";
 const TOTAL = 980, MAX_QTY = 8;
 
 const STAR_PLAYERS = {
-  "POR7":{name:"Cristiano Ronaldo",flag:"🇵🇹"},
-  "ARG10":{name:"Lionel Messi",flag:"🇦🇷"},
-  "FRA12":{name:"Kylian Mbappé",flag:"🇫🇷"},
-  "NOR9":{name:"Erling Haaland",flag:"🇳🇴"},
-  "ENG9":{name:"Harry Kane",flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
-  "BRA10":{name:"Vinicius Jr.",flag:"🇧🇷"},
-  "ESP7":{name:"Lamine Yamal",flag:"🇪🇸"},
-  "GER9":{name:"Jamal Musiala",flag:"🇩🇪"},
-  "ESP11":{name:"Pedri",flag:"🇪🇸"},
-  "BRA7":{name:"Rodrygo",flag:"🇧🇷"},
-  "NED9":{name:"Cody Gakpo",flag:"🇳🇱"},
-  "FRA11":{name:"A. Griezmann",flag:"🇫🇷"},
-  "URU9":{name:"Darwin Núñez",flag:"🇺🇾"},
-  "COL9":{name:"Luis Díaz",flag:"🇨🇴"},
-  "ARG7":{name:"Julián Álvarez",flag:"🇦🇷"},
-  "MAR10":{name:"A. Hakimi",flag:"🇲🇦"},
-  "SEN9":{name:"Sadio Mané",flag:"🇸🇳"},
-  "JPN10":{name:"T. Minamino",flag:"🇯🇵"},
-  "NZL6":{name:"Tim Payne",flag:"🇳🇿"}
+  "ARG17":{name:"Lionel Messi",flag:"🇦🇷"},        // ✓ verificado
+  "ARG19":{name:"Julián Álvarez",flag:"🇦🇷"},       // ✓ verificado
+  "ARG9":{name:"A. Mac Allister",flag:"🇦🇷"},       // ✓ verificado
+  "POR15":{name:"Cristiano Ronaldo",flag:"🇵🇹"},    // ✓ verificado
+  "ENG18":{name:"Harry Kane",flag:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},         // ✓ verificado (era ENG9)
+  "FRA20":{name:"Kylian Mbappé",flag:"🇫🇷"},        // ✓ verificado
+  "NOR15":{name:"Erling Haaland",flag:"🇳🇴"},       // ✓ verificado
+  "BRA14":{name:"Vinicius Jr.",flag:"🇧🇷"},         // ✓ verificado
+  "BRA15":{name:"Rodrygo",flag:"🇧🇷"},              // ✓ verificado
+  "BRA10":{name:"Casemiro",flag:"🇧🇷"},             // ✓ verificado (nuevo)
+  "ESP15":{name:"Lamine Yamal",flag:"🇪🇸"},         // ✓ verificado
+  "ESP17":{name:"Nico Williams",flag:"🇪🇸"},        // ✓ verificado (nuevo)
+  "ESP11":{name:"Pedri",flag:"🇪🇸"},                // ✓ verificado
+  "GER15":{name:"Jamal Musiala",flag:"🇩🇪"},        // ✓ verificado
+  "GER11":{name:"Florian Wirtz",flag:"🇩🇪"},        // ✓ verificado
+  "NED20":{name:"Cody Gakpo",flag:"🇳🇱"},           // ✓ verificado
+  "NED3":{name:"Virgil van Dijk",flag:"🇳🇱"},       // ✓ verificado
+  "MAR4":{name:"Achraf Hakimi",flag:"🇲🇦"},         // ✓ verificado
+  "COL20":{name:"Luis Díaz",flag:"🇨🇴"},            // ✓ verificado
+  "COL14":{name:"James Rodríguez",flag:"🇨🇴"},      // ✓ verificado (nuevo)
+  "SEN15":{name:"Sadio Mané",flag:"🇸🇳"},           // ✓ verificado
+  "KOR18":{name:"Heung-min Son",flag:"🇰🇷"},        // ✓ verificado
+  "EGY17":{name:"Mohamed Salah",flag:"🇪🇬"},        // ✓ verificado
+  "JPN16":{name:"T. Minamino",flag:"🇯🇵"},          // ✓ verificado
+  "CRO9":{name:"Luka Modrić",flag:"🇭🇷"},           // ✓ verificado (era CRO11)
+  "BEL15":{name:"Kevin De Bruyne",flag:"🇧🇪"},      // ✓ verificado
+  "BEL20":{name:"Romelu Lukaku",flag:"🇧🇪"},        // ✓ verificado
+  "NZL6":{name:"Tim Payne",flag:"🇳🇿"},             // ✓ verificado
 };
 
 const TEAMS=[
@@ -512,7 +521,31 @@ function refreshCell(cell,id){const qty=stickers[id]||0,isRon=id==="POR7",isStar
 // ══ DASHBOARD ════════════════════════════════
 function renderDash(){updateUI();updateDashStats();renderTeamsList();renderRonaldoMission();}
 function updateDashStats(){const vals=Object.values(stickers);const owned=vals.filter(v=>v>=1).length,reps=vals.filter(v=>v>=2).length,extra=vals.reduce((a,v)=>a+Math.max(0,v-1),0),pct=Math.round(owned/TOTAL*100);document.getElementById("s-owned").textContent=owned;document.getElementById("s-reps").textContent=reps;document.getElementById("s-miss").textContent=TOTAL-owned;document.getElementById("s-extr").textContent=extra;document.getElementById("ring-pct").textContent=pct+"%";document.getElementById("ring-circle").style.strokeDashoffset=201.1-(201.1*pct/100);}
-function renderRonaldoMission(){const el=document.getElementById("ronaldo-mission"),qty=stickers["POR7"]||0;if(qty===0)el.innerHTML='<div class="mission-card alert"><div class="mission-title" style="color:var(--red)">🎯 MISIÓN ACTIVA: Conseguir a Ronaldo (POR7)</div><div class="mission-desc">CR7 no está en tu álbum. Ofrece 3-4 figuritas por él. ¡Prioridad máxima!</div></div>';else if(qty===1)el.innerHTML='<div class="mission-card done"><div class="mission-title" style="color:var(--accent2)">✅ ¡Conseguiste a Ronaldo! (POR7)</div><div class="mission-desc">CR7 ya está en tu álbum. Un repetido sería excelente moneda de cambio.</div></div>';else el.innerHTML=`<div class="mission-card done"><div class="mission-title" style="color:var(--accent)">⭐ Ronaldo x${qty} — ¡${qty-1} para cambio!</div><div class="mission-desc">Úsalos para conseguir tus figuritas más difíciles.</div></div>`;}
+function renderRonaldoMission(){
+  // Ronaldo (CR7) is NOT in the base album stickers.
+  // He appears only in Coca-Cola exclusive inserts (CC section).
+  // ARG17 = Messi, POR7 = Nuno Mendes per official checklist.
+  const el=document.getElementById("ronaldo-mission");
+  const qtyMessi=stickers["ARG17"]||0;
+  const qtyCR7_cc=stickers["CC1"]||0; // Coca-Cola exclusives section
+  let html='';
+  // Messi mission
+  if(qtyMessi===0){
+    html+='<div class="mission-card alert"><div class="mission-title" style="color:var(--red)">🎯 MISIÓN: Conseguir a Messi (ARG17)</div><div class="mission-desc">¡La figurita más buscada del álbum! ARG17 — Lionel Messi.</div></div>';
+  } else {
+    html+='<div class="mission-card done"><div class="mission-title" style="color:var(--accent2)">✅ ¡Tienes a Messi! (ARG17)</div><div class="mission-desc">La figurita más icónica ya está en tu álbum.</div></div>';
+  }
+  // Ronaldo mission - POR15
+  const qtyCR7=stickers["POR15"]||0;
+  if(qtyCR7===0){
+    html+='<div class="mission-card alert"><div class="mission-title" style="color:var(--red)">🎯 MISIÓN: Conseguir a Ronaldo (POR15)</div><div class="mission-desc">CR7 está en el álbum base — figurita POR15. ¡A buscarlo en intercambios!</div></div>';
+  } else if(qtyCR7===1){
+    html+='<div class="mission-card done"><div class="mission-title" style="color:var(--accent2)">✅ ¡Tienes a Ronaldo! (POR15)</div><div class="mission-desc">CR7 ya está en tu álbum. Un repetido sería excelente moneda de cambio.</div></div>';
+  } else {
+    html+=`<div class="mission-card done"><div class="mission-title" style="color:var(--accent)">⭐ Ronaldo x${qtyCR7} (POR15) — ¡${qtyCR7-1} para cambio!</div><div class="mission-desc">Úsalos para conseguir tus figuritas más difíciles.</div></div>`;
+  }
+  el.innerHTML=html;
+}
 function renderTeamsList(){let data=TEAMS.filter(t=>t.code!=="CC").map(t=>{const ts=STICKERS.filter(s=>s.code===t.code);const owned=ts.filter(s=>(stickers[s.id]||0)>=1).length,reps=ts.reduce((a,s)=>a+Math.max(0,(stickers[s.id]||0)-1),0);return{...t,owned,reps,missing:20-owned,pct:Math.round(owned/20*100)};});if(teamsSort==="alpha")data.sort((a,b)=>a.name.localeCompare(b.name));else if(teamsSort==="reps")data.sort((a,b)=>b.reps-a.reps);else data.sort((a,b)=>b.missing-a.missing);document.getElementById("teams-list-body").innerHTML=data.map(t=>`<div class="team-row"><span class="team-flag">${t.flag}</span><span class="team-name">${t.name}</span><div class="team-bar-wrap"><div class="team-bar"><div class="team-bar-fill" style="width:${t.pct}%"></div></div></div><span class="team-pct">${t.pct}%</span></div>`).join("");}
 function sortTeams(by){teamsSort=by;["alpha","reps","miss"].forEach(s=>document.getElementById("sort-"+s).classList.toggle("active",s===by));renderTeamsList();}
 
@@ -548,7 +581,7 @@ function filterTeamChips(){
     b.classList.toggle("chip-hidden",!matches);
   });
 }
-function renderGrid(){const q=document.getElementById("ing-search").value.toLowerCase();const sb=document.getElementById("ing-sort").value;let f=STICKERS.filter(s=>{if(activeTeamFilter!=="ALL"&&s.code!==activeTeamFilter)return false;if(q&&!s.id.toLowerCase().includes(q)&&!s.team.toLowerCase().includes(q))return false;return true;});if(sb==="alpha")f=[...f].sort((a,b)=>a.team.localeCompare(b.team)||a.num-b.num);else if(sb==="owned")f=[...f].sort((a,b)=>(stickers[b.id]||0)-(stickers[a.id]||0));else if(sb==="empty")f=[...f].sort((a,b)=>(stickers[a.id]||0)-(stickers[b.id]||0));let html="",lastCode=null;f.forEach(s=>{if(activeTeamFilter==="ALL"&&s.code!==lastCode){const t=TEAMS.find(t=>t.code===s.code);html+=`<div class="grid-section-header">${t?t.flag:""} ${t?t.name:s.code}</div>`;lastCode=s.code;}const qty=stickers[s.id]||0,isRon=s.id==="POR7",isStar=!!STAR_PLAYERS[s.id];const cls="sticker-cell"+(isRon?" ronaldo-cell"+(qty?" owned":""):(qty===1?" owned":qty>1?" repeated":""))+(isStar&&!isRon?" star-player":"");html+=`<div class="${cls}" id="cell-${s.id}" onclick="tapSticker('${s.id}')">${isRon?'<div class="ronaldo-top">CR7</div>':""}${isStar&&!isRon?'<div class="star-badge">⭐</div>':""}<span class="sc-id">${s.id}</span><span class="sc-flag">${s.flag}</span><span class="sc-qty">${qty}</span></div>`;});document.getElementById("sticker-grid").innerHTML=html;document.getElementById("ing-updated").textContent=lastUpdated;}
+function renderGrid(){const q=document.getElementById("ing-search").value.toLowerCase();const sb=document.getElementById("ing-sort").value;let f=STICKERS.filter(s=>{if(activeTeamFilter!=="ALL"&&s.code!==activeTeamFilter)return false;if(q&&!s.id.toLowerCase().includes(q)&&!s.team.toLowerCase().includes(q))return false;return true;});if(sb==="alpha")f=[...f].sort((a,b)=>a.team.localeCompare(b.team)||a.num-b.num);else if(sb==="owned")f=[...f].sort((a,b)=>(stickers[b.id]||0)-(stickers[a.id]||0));else if(sb==="empty")f=[...f].sort((a,b)=>(stickers[a.id]||0)-(stickers[b.id]||0));let html="",lastCode=null;f.forEach(s=>{if(activeTeamFilter==="ALL"&&s.code!==lastCode){const t=TEAMS.find(t=>t.code===s.code);html+=`<div class="grid-section-header">${t?t.flag:""} ${t?t.name:s.code}</div>`;lastCode=s.code;}const qty=stickers[s.id]||0,isRon=s.id==="POR7",isStar=!!STAR_PLAYERS[s.id];const cls="sticker-cell"+(isRon?" ronaldo-cell"+(qty?" owned":""):(qty===1?" owned":qty>1?" repeated":""))+(isStar&&!isRon?" star-player":"");html+=`<div class="${cls}" id="cell-${s.id}" onclick="tapSticker('${s.id}')">${isRon?'<div class="ronaldo-top">POR7</div>':""}${isStar&&!isRon?'<div class="star-badge">⭐</div>':""}<span class="sc-id">${s.id}</span><span class="sc-flag">${s.flag}</span><span class="sc-qty">${qty}</span></div>`;});document.getElementById("sticker-grid").innerHTML=html;document.getElementById("ing-updated").textContent=lastUpdated;}
 
 // ══ CAMBIOS ══════════════════════════════════
 function renderCambios(){
